@@ -6,7 +6,7 @@ You must write an algorithm with O(log n) runtime complexity.
 """
 
 
-def binary_search(data, search, low, high):
+def desc_binary_search_or_insert_index(data, search, low, high):
 
     if not data:
         return low

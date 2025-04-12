@@ -1,4 +1,4 @@
-def binary_search(data, search, low, high):
+def desc_binary_search(data, search, low, high):
 
     if not data:
         return -1
