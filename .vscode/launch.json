@@ -5,17 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Run",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/run.py"
+        },
+        {
             "name": "Go Package",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}"
         },
-        {
-            "name": "Python File",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}"
-        }
     ]
 }
