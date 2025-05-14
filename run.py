@@ -1,10 +1,14 @@
-from linked_list import get_singly, get_cyclic_singly
-from linked_list.node import Data
+# from linked_list import get_singly, get_cyclic_singly
+# from linked_list.node import Data
+
+# from binary_tree.node import root, height
 
 if __name__ == "__main__":
-    singly = get_cyclic_singly(end=10)
+    pass
+    # height(root)
+    # singly = get_cyclic_singly(end=10)
     # singly.represent()
-    print(singly.is_cyclic())
+    # print(singly.is_cyclic())
     # singly.in_place_reverse()
     # singly.delete(Data(3))
     # singly.delete(Data(1))
