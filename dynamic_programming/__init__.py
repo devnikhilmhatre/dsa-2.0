@@ -1,4 +1,4 @@
-def longest_common_sequence(list_1: list, list_2: list):
+def longest_common_sequence_custom(list_1: list, list_2: list):
     map_1 = {}
     map_2 = {}
     for index, i in enumerate(list_1):
@@ -47,9 +47,59 @@ def longest_common_sequence(list_1: list, list_2: list):
     return max(max_count)
 
 
-print(longest_common_sequence([i for i in "abcdea"], [i for i in "adbefcdpea"]))
+# print(longest_common_sequence_custom([i for i in "abcdeaf"], [i for i in "adbdeafcpea"]))
 
-"""
-"abcde"
-"ace" 
-"""
+
+class Solution:
+
+    def lcs2(self, text1, text2):
+        for index1, i in enumerate(text1):
+            index1 += 1
+            for index2, j in enumerate(text2):
+                index2 += 1
+                if i == j:
+                    self.values[(index1, index2)] = 1 + max(
+                        [self.values.get((index1 - 1, index2 - 1), 0), 0]
+                    )
+                else:
+                    self.values[(index1, index2)] = max(
+                        [
+                            self.values.get((index1 - 1, index2), 0),
+                            self.values.get((index1, index2 - 1), 0),
+                        ]
+                    )
+        return self.values[len(text1), len(text2)]
+
+    def lcs(self, text1, text2, i, j):
+        print(text1[: i + 1], text2[: j + 1], "-" * 5)
+        if i >= len(text1) or j >= len(text2):
+            return 0
+
+        if (i, j) in self.values:
+            return self.values.get((i, j))
+
+        if text1[i] == text2[j]:
+            self.values[(i, j)] = 1 + self.lcs(text1, text2, i + 1, j + 1)
+        else:
+            v1 = self.lcs(text1, text2, i + 1, j)
+            v2 = self.lcs(text1, text2, i, j + 1)
+            self.values[(i, j)] = max(v1, v2)
+
+        print(text1[: i + 1], text2[: j + 1], self.values[(i, j)])
+        return self.values[(i, j)]
+
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        self.values = {}
+        return self.lcs2(text1, text2)
+
+
+text1 = "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+text2 = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+
+from datetime import datetime
+
+start = datetime.now()
+text1 = "bsbininm"
+text2 = "jmjkbkjkv"
+print(Solution().longestCommonSubsequence(text1, text2))
+print(datetime.now() - start)
