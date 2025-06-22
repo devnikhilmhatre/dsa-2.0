@@ -1,44 +1,33 @@
 from pymongo import MongoClient
-import threading
+import asyncio
 from time import sleep
 from queue import Queue
 
-sem = threading.Semaphore(10)
+sem = asyncio.Semaphore(10)
 
 
 class Pool:
-    # def __init__(self):
-    #     self.conns = Queue(10)
-    #     for _ in range(10):
-    #         self.conns.put()
-
     def get(self):
         return MongoClient()
 
-    # def add(self, conn):
-    #     self.conns.put(conn)
 
-
-def target(connection, pool, i):
+async def target(connection, i):
     if sem:
-        sleep(5)
+        await asyncio.sleep(5)
         connection["benq"]["users"].find_one({})
         print("-" * 5, i)
         # pool.add(connection)
 
 
-def find():
+async def find():
     pool = Pool()
     threads = []
     for i in range(50):
         print(i)
         connection = pool.get()
-        t = threading.Thread(target=target, args=(connection, pool, i))
-        threads.append(t)
-        t.start()
+        threads.append(target(connection, i))
 
-    for t in threads:
-        t.join()
+    await asyncio.gather(*threads)
 
 
-# find()
+asyncio.get_event_loop().run_until_complete(find())
