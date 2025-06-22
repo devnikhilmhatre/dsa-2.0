@@ -3,24 +3,28 @@ import threading
 from time import sleep
 from queue import Queue
 
+sem = threading.Semaphore(10)
+
 
 class Pool:
-    def __init__(self):
-        self.conns = Queue(10)
-        for _ in range(10):
-            self.conns.put(MongoClient())
+    # def __init__(self):
+    #     self.conns = Queue(10)
+    #     for _ in range(10):
+    #         self.conns.put()
 
     def get(self):
-        return self.conns.get()
+        return MongoClient()
 
-    def add(self, conn):
-        self.conns.put(conn)
+    # def add(self, conn):
+    #     self.conns.put(conn)
 
 
 def target(connection, pool, i):
-    sleep(5)
-    connection["benq"]["users"].find_one({})
-    pool.add(connection)
+    if sem:
+        sleep(5)
+        connection["benq"]["users"].find_one({})
+        print("-" * 5, i)
+        # pool.add(connection)
 
 
 def find():
