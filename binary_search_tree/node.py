@@ -196,4 +196,26 @@ def bst_doubly_linked_list(node: TreeNode):
     print(l)
 
 
-bst_doubly_linked_list(root)
+# bst_doubly_linked_list(root)
+
+"""
+Create BST from sorted array
+"""
+
+
+def sorted_list_to_bst(arr: list, low, high):
+    if low > high:
+        return None
+
+    mid = (high + low) // 2
+
+    node = TreeNode(arr[mid])
+
+    node.left = sorted_list_to_bst(arr, low, mid - 1)
+    node.right = sorted_list_to_bst(arr, mid + 1, high)
+    return node
+
+
+arr = list(range(1, 11))
+sorted_tree_node = sorted_list_to_bst(arr, 0, len(arr) - 1)
+print(pre_order_traversal(sorted_tree_node))
