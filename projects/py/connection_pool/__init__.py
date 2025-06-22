@@ -1,21 +1,20 @@
 from pymongo import MongoClient
 import threading
 from time import sleep
+from queue import Queue
 
 
 class Pool:
     def __init__(self):
-        self.conns = [MongoClient() for _ in range(10)]
+        self.conns = Queue(10)
+        for _ in range(10):
+            self.conns.put(MongoClient())
 
     def get(self):
-        while True:
-            if self.conns:
-                return self.conns.pop()
-            sleep(1)
-            print("Nothing to return")
+        return self.conns.get()
 
     def add(self, conn):
-        self.conns.append(conn)
+        self.conns.put(conn)
 
 
 def target(connection, pool, i):
@@ -36,3 +35,6 @@ def find():
 
     for t in threads:
         t.join()
+
+
+# find()
